@@ -11,7 +11,7 @@ double det(double **, int);
 int main (int argc, char **argv) {
     int maxIndex = 0, /* biggest index in a scannedArray array */
     i, j, /* counters */
-    scanChecker, matrixDimension, root;
+    scanChecker, matrixDimension;
     double scannedValue, determinant;
     
     scanf("%d", &matrixDimension);
