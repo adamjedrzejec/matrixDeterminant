@@ -14,24 +14,46 @@ int main (int argc, char **argv) {
     scanChecker, matrixDimension;
     double scannedValue, determinant;
 
-    scanf("%d", &matrixDimension);
+    if(scanf("%d", &matrixDimension) < 1)
+    {
+      printf("Invalid size \r\n");
+      exit(3);
+    }
     printf("%d by %d\n", matrixDimension, matrixDimension);
 
+ 
 
     double **matrix;
     matrix = malloc(matrixDimension * sizeof(double *));
+    if (!matrix)
+	exit(3);
     for (i = 0; i < matrixDimension; i++)
     {
         matrix[i] = malloc (matrixDimension * sizeof (double));
-        if(!matrix[i]) abort();
+        if(!matrix[i])
+	{
+	  for (j = 0; j < i; j++)
+	    free(matrix[j]);
+	  free(matrix);
+	  abort();
+	}
     }
 
 
     scanChecker = scanf("%lf", &scannedValue);
     i = 0, j = 0;
 
-    while(scanChecker == 1)
+    
+    while(scanChecker != EOF)
     {
+	if (scanChecker == 0)
+	{
+	  printf("INCORRECT INPUT\n");
+	  for (i = 0; i < matrixDimension; i++)
+	    free(matrix[i]);
+	  free(matrix);
+	  abort();
+	}
         matrix[i][j] = scannedValue;
         scanChecker = scanf("%lf", &scannedValue);
         if (scanChecker == 1)
@@ -71,6 +93,7 @@ double det(double **matrix, int matrixDimension)
     {
         double **minorMatrix;
         minorMatrix = malloc((matrixDimension - 1) * sizeof(double *));
+	if (!minorMatrix) abort();
         for (i = 0; i < matrixDimension - 1; i++)
         {
             minorMatrix[i] = malloc ((matrixDimension - 1) * sizeof (double));
